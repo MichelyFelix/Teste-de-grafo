@@ -1,0 +1,7 @@
+Vertice 0: Grau 1
+Vertice 1: Grau 2
+Vertice 2: Grau 3
+Vertice 3: Grau 0
+Vertice 4: Grau 1
+Vertice 5: Grau 2
+Vertice 6: Grau 0

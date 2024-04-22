@@ -118,12 +118,60 @@ void vertice_sumidouro(int matriz[][tamanho_matriz]){
     }
 }
 
+    void vertice_fonte(int matriz[][tamanho_matriz]){
+         int aux = 0; // Inicializa aux com 0
+    printf("Vertice(s) fonte:\n");
+    for(int cont = 0; cont < tamanho_matriz; cont++){
+        int fonte = 1;
+        for(int cont2 = 0; cont2 < tamanho_matriz; cont2++){
+            if (matriz[cont2][cont] != 0){
+                fonte = 0;
+                break;
+            }
+        } 
+        if(fonte){
+            printf("%d\n", cont);
+            aux++;
+        }
+    }
+    if (aux == 0){ // Se aux ainda for 0, nenhum vértice sumidouro foi encontrado
+        printf("Nao foi encontrado vertice sumidouro!\n");
+    }
+    } 
+
+void grafo_complementar(int matriz[][tamanho_matriz], char *nome_arquivo){
+    FILE *arquivo = fopen(nome_arquivo, "w");
+    if (arquivo == NULL)
+    {
+        printf("Erro ao abrir o arquivo %s\n", nome_arquivo);
+        return;
+    }
+
+    for(int i = 0; i < tamanho_matriz; i++){
+        for(int j = 0; j < tamanho_matriz; j++){
+            if (i == j) { // Verifica se é um elemento da diagonal principal
+                fprintf(arquivo, "%d ", matriz[i][j]); // Mantém o valor original
+            } else {
+                if(matriz[i][j] == 0){
+                    matriz[i][j] = 1;
+                } else {
+                    matriz[i][j] = 0;
+                }
+                fprintf(arquivo, "%d ", matriz[i][j]);
+            }
+        }
+        fprintf(arquivo, "\n");
+    }
+
+    fclose(arquivo);
+}
+
+
 int main() {
     int i;
     int matriz_adjacencia[tamanho_matriz][tamanho_matriz];
     ler_arquivo("matriz.txt", matriz_adjacencia);
     mostra_matriz(matriz_adjacencia);
-
     int maior_grau = vertice_com_maior_grau(matriz_adjacencia);
     printf("vertice com maior grau do grafo: %d\n", maior_grau);
 
@@ -144,5 +192,7 @@ int main() {
     escrever_graus_arquivo("dados_grafos_graus.txt", graus, tamanho_matriz);
     vertices_isolados(matriz_adjacencia);
     vertice_sumidouro(matriz_adjacencia);
+    vertice_fonte(matriz_adjacencia);
+    grafo_complementar(matriz_adjacencia,"Matriz_Complementar.txt");
     return 0;
 }
